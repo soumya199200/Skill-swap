@@ -31,42 +31,50 @@ function Register() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
-      <h2>Register for Skill Swap</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleRegister}>
+    <div className="page-shell page-shell--centered">
+      <div className="auth-card">
+        <p className="auth-eyebrow">Get Started</p>
+        <h1 className="auth-title">Create your learning exchange profile.</h1>
+        <p className="auth-subtitle">
+          Join as a student or mentor, then start sharing skills and earning credits.
+        </p>
+        <form className="auth-form" onSubmit={handleRegister}>
+          {error && <p className="status-message status-message--error">{error}</p>}
         <input
+          className="input-field"
           type="text"
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <input
+          className="input-field"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <input
+          className="input-field"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <select
+          className="select-field"
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         >
           <option value="student">Student</option>
           <option value="mentor">Mentor</option>
         </select>
-        <button type="submit" style={{ padding: '10px 20px' }}>Register</button>
-      </form>
-      <p>Already have an account? <Link to="/">Login</Link></p>
+          <button className="primary-button" type="submit">Register</button>
+        </form>
+        <p className="auth-footer">
+          Already have an account? <Link className="text-link" to="/">Login</Link>
+        </p>
+      </div>
     </div>
   );
 }

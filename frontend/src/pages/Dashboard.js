@@ -23,33 +23,43 @@ function Dashboard() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Welcome to Skill Swap Dashboard!</h1>
-      <p>Logged in as: {currentUser?.email}</p>
-      <nav style={{ marginBottom: '20px' }}>
-        <Link to="/skills" style={{ marginRight: '15px' }}>Browse Skills</Link>
-        <Link to="/skills" style={{ marginRight: '15px' }}>Create Skill</Link>
-        <Link to="/profile" style={{ marginRight: '15px' }}>My Profile</Link>
-        <button onClick={handleLogout}>Logout</button>
-      </nav>
-      <h2>Available Skills</h2>
-      {skills.length === 0 ? (
-        <p>No skills available yet!</p>
-      ) : (
-        skills.map(skill => (
-          <div key={skill._id} style={{
-            border: '1px solid #ccc',
-            padding: '10px',
-            marginBottom: '10px',
-            borderRadius: '5px'
-          }}>
-            <h3>{skill.title}</h3>
-            <p>{skill.description}</p>
-            <p>Cost: {skill.creditsCost} credits</p>
-            <p>Category: {skill.category}</p>
+    <div className="page-shell">
+      <div className="dashboard-shell">
+        <section className="hero-panel panel-card">
+          <span className="pill">Live learning exchange</span>
+          <h1 className="page-title">Welcome to your Skill Swap dashboard.</h1>
+          <p className="hero-meta">Signed in as {currentUser?.email}</p>
+          <div className="nav-row">
+            <Link className="nav-link" to="/skills">Browse Skills</Link>
+            <Link className="nav-link" to="/skills">Create Skill</Link>
+            <Link className="nav-link" to="/profile">My Profile</Link>
+            <button className="secondary-button" onClick={handleLogout}>Logout</button>
           </div>
-        ))
-      )}
+        </section>
+
+        <section className="panel-card">
+          <h2 className="section-heading">Available Skills</h2>
+          <p className="section-subtitle">
+            Explore what other learners and mentors are already sharing across the platform.
+          </p>
+          <div className="skills-grid" style={{ marginTop: '24px' }}>
+            {skills.length === 0 ? (
+              <p>No skills available yet.</p>
+            ) : (
+              skills.map((skill) => (
+                <article className="skill-card" key={skill._id}>
+                  <h3>{skill.title}</h3>
+                  <p>{skill.description}</p>
+                  <div className="skill-meta">
+                    <span className="pill">Cost: {skill.creditsCost} credits</span>
+                    <span className="pill">Category: {skill.category}</span>
+                  </div>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

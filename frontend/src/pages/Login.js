@@ -20,27 +20,35 @@ function Login() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
-      <h2>Login to Skill Swap</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin}>
+    <div className="page-shell page-shell--centered">
+      <div className="auth-card">
+        <p className="auth-eyebrow">Skill Swap</p>
+        <h1 className="auth-title">Trade what you know. Learn what you don't.</h1>
+        <p className="auth-subtitle">
+          Log in to continue building your profile, posting skills, and learning from the community.
+        </p>
+        <form className="auth-form" onSubmit={handleLogin}>
+          {error && <p className="status-message status-message--error">{error}</p>}
         <input
+          className="input-field"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <input
+          className="input-field"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
-        <button type="submit" style={{ padding: '10px 20px' }}>Login</button>
-      </form>
-      <p>Don't have an account? <Link to="/register">Register</Link></p>
+          <button className="primary-button" type="submit">Login</button>
+        </form>
+        <p className="auth-footer">
+          Don&apos;t have an account? <Link className="text-link" to="/register">Register</Link>
+        </p>
+      </div>
     </div>
   );
 }

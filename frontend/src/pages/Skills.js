@@ -81,40 +81,74 @@ function Skills() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Skills</h1>
-      <nav style={{ marginBottom: '20px' }}>
-        <Link to="/dashboard" style={{ marginRight: '15px' }}>Back to Dashboard</Link>
-        <Link to="/profile">My Profile</Link>
-      </nav>
-      <h2>Post a New Skill</h2>
-      <form onSubmit={handleCreateSkill}>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+    <div className="page-shell">
+      <div className="content-shell grid-layout grid-layout--sidebar">
+        <section className="panel-card">
+          <h1 className="page-title">Skills Marketplace</h1>
+          <p className="page-subtitle">
+            Share what you know, browse active listings, and keep the learning momentum going.
+          </p>
+          <div className="nav-row">
+            <Link className="nav-link" to="/dashboard">Back to Dashboard</Link>
+            <Link className="nav-link" to="/profile">My Profile</Link>
+          </div>
+
+          <h2 className="section-heading" style={{ marginTop: '28px' }}>All Skills</h2>
+          <div className="skills-grid">
+            {skills.length === 0 ? (
+              <div className="skill-card">
+                <h3>No skills yet</h3>
+                <p>Be the first to post something valuable for the community.</p>
+              </div>
+            ) : (
+              skills.map((skill) => (
+                <article className="skill-card" key={skill._id}>
+                  <h3>{skill.title}</h3>
+                  <p>{skill.description}</p>
+                  <div className="skill-meta">
+                    <span className="pill">Cost: {skill.creditsCost} credits</span>
+                    <span className="pill">Category: {skill.category}</span>
+                  </div>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
+
+        <aside className="form-card">
+          <span className="pill">New Listing</span>
+          <h2 className="section-heading" style={{ marginTop: '16px' }}>Post a skill</h2>
+          <p className="section-subtitle">
+            Add a clear title, what learners will get, and the credit cost.
+          </p>
+
+          <form className="stack-form" onSubmit={handleCreateSkill} style={{ marginTop: '20px' }}>
+            {error && <p className="status-message status-message--error">{error}</p>}
+            {successMessage && <p className="status-message status-message--success">{successMessage}</p>}
         <input
+          className="input-field"
           type="text"
           placeholder="Skill Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <textarea
+          className="textarea-field"
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <input
+          className="input-field"
           type="number"
           placeholder="Credits Cost"
           value={creditsCost}
           onChange={(e) => setCreditsCost(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
         <select
+          className="select-field"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         >
           <option value="technology">Technology</option>
           <option value="design">Design</option>
@@ -123,23 +157,12 @@ function Skills() {
           <option value="music">Music</option>
           <option value="other">Other</option>
         </select>
-        <button type="submit" style={{ padding: '10px 20px' }} disabled={isSubmitting}>
-          {isSubmitting ? 'Posting...' : 'Post Skill'}
-        </button>
-      </form>
-      <h2>All Skills</h2>
-      {skills.map(skill => (
-        <div key={skill._id} style={{
-          border: '1px solid #ccc',
-          padding: '10px',
-          marginBottom: '10px',
-          borderRadius: '5px'
-        }}>
-          <h3>{skill.title}</h3>
-          <p>{skill.description}</p>
-          <p>Cost: {skill.creditsCost} credits</p>
-        </div>
-      ))}
+            <button className="primary-button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Posting...' : 'Post Skill'}
+            </button>
+          </form>
+        </aside>
+      </div>
     </div>
   );
 }

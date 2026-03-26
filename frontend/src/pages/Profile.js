@@ -79,63 +79,92 @@ function Profile() {
   };
 
   if (!profile && !error) {
-    return <div style={{ padding: '20px' }}><p>Loading profile...</p></div>;
+    return (
+      <div className="page-shell">
+        <div className="content-shell">
+          <div className="panel-card">
+            <p>Loading profile...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '700px', margin: '0 auto' }}>
-      <h1>My Profile</h1>
-      <nav style={{ marginBottom: '20px' }}>
-        <Link to="/dashboard" style={{ marginRight: '15px' }}>Back to Dashboard</Link>
-        <Link to="/skills">Skills</Link>
-      </nav>
+    <div className="page-shell">
+      <div className="content-shell grid-layout grid-layout--sidebar">
+        <section className="panel-card">
+          <span className="pill">Profile Settings</span>
+          <h1 className="page-title" style={{ marginTop: '16px' }}>Shape how others learn from you.</h1>
+          <p className="page-subtitle">
+            Keep your identity, role, and learning interests current so matches feel more relevant.
+          </p>
 
-      {profile && (
-        <div style={{ marginBottom: '20px' }}>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Credits:</strong> {profile.credits}</p>
-        </div>
-      )}
+          <div className="nav-row">
+            <Link className="nav-link" to="/dashboard">Back to Dashboard</Link>
+            <Link className="nav-link" to="/skills">Skills</Link>
+          </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+          {profile && (
+            <div className="profile-summary" style={{ marginTop: '28px' }}>
+              <div className="summary-item">
+                <span className="summary-label">Email</span>
+                <strong>{profile.email}</strong>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Credits</span>
+                <strong>{profile.credits}</strong>
+              </div>
+            </div>
+          )}
+        </section>
 
-      <form onSubmit={handleSubmit}>
+        <aside className="form-card">
+          <h2 className="section-heading">Update my profile</h2>
+          <p className="section-subtitle">
+            Use comma-separated lists for skills so you can quickly keep this up to date.
+          </p>
+
+          <form className="stack-form" onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
+            {error && <p className="status-message status-message--error">{error}</p>}
+            {successMessage && <p className="status-message status-message--success">{successMessage}</p>}
         <input
+          className="input-field"
           type="text"
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         />
 
         <select
+          className="select-field"
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
         >
           <option value="student">Student</option>
           <option value="mentor">Mentor</option>
         </select>
 
         <textarea
+          className="textarea-field"
           placeholder="Skills I Offer (comma separated)"
           value={skillsOffered}
           onChange={(e) => setSkillsOffered(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px', minHeight: '100px' }}
         />
 
         <textarea
+          className="textarea-field"
           placeholder="Skills I Want (comma separated)"
           value={skillsWanted}
           onChange={(e) => setSkillsWanted(e.target.value)}
-          style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px', minHeight: '100px' }}
         />
 
-        <button type="submit" style={{ padding: '10px 20px' }} disabled={isSaving}>
-          {isSaving ? 'Saving...' : 'Save Profile'}
-        </button>
-      </form>
+            <button className="primary-button" type="submit" disabled={isSaving}>
+              {isSaving ? 'Saving...' : 'Save Profile'}
+            </button>
+          </form>
+        </aside>
+      </div>
     </div>
   );
 }
