@@ -28,6 +28,7 @@ function Dashboard() {
       <p>Logged in as: {currentUser?.email}</p>
       <nav style={{ marginBottom: '20px' }}>
         <Link to="/skills" style={{ marginRight: '15px' }}>Browse Skills</Link>
+        <Link to="/skills" style={{ marginRight: '15px' }}>Create Skill</Link>
         <Link to="/profile" style={{ marginRight: '15px' }}>My Profile</Link>
         <button onClick={handleLogout}>Logout</button>
       </nav>
