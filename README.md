@@ -1,4 +1,4 @@
-# Skill-swap
+# Skill swap
 
 ## 📌 Description
 
