@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { getSkills } from '../services/api';
+import { getSkills, getUserByFirebaseUID } from '../services/api';
 import { auth } from '../config/firebase';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Dashboard() {
   const { currentUser } = useAuth();
   const [skills, setSkills] = useState([]);
+  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +16,9 @@ function Dashboard() {
       return;
     }
     getSkills().then(res => setSkills(res.data));
+    getUserByFirebaseUID(currentUser.uid)
+      .then((res) => setProfile(res.data))
+      .catch(() => {});
   }, [currentUser, navigate]);
 
   const handleLogout = async () => {
@@ -26,13 +30,24 @@ function Dashboard() {
     <div className="page-shell">
       <div className="dashboard-shell">
         <section className="hero-panel panel-card">
-          <span className="pill">Live learning exchange</span>
+          <span className="pill">
+            {profile?.role === 'mentor' ? 'Mentor workspace' : 'Student workspace'}
+          </span>
           <h1 className="page-title">Welcome to your Skill Swap dashboard.</h1>
-          <p className="hero-meta">Signed in as {currentUser?.email}</p>
+          <p className="hero-meta">
+            Signed in as {currentUser?.email}
+            {profile?.role ? ` • Role: ${profile.role}` : ''}
+          </p>
+          <p className="section-subtitle">
+            {profile?.role === 'mentor'
+              ? 'Post skills, review incoming booking requests, and complete sessions to earn credits.'
+              : 'Browse mentors, request sessions, and track your accepted bookings in one place.'}
+          </p>
           <div className="nav-row">
             <Link className="nav-link" to="/skills">Browse Skills</Link>
-            <Link className="nav-link" to="/skills">Create Skill</Link>
+            {profile?.role === 'mentor' && <Link className="nav-link" to="/skills">Create Skill</Link>}
             <Link className="nav-link" to="/profile">My Profile</Link>
+            <Link className="nav-link" to="/sessions">My Sessions</Link>
             <button className="secondary-button" onClick={handleLogout}>Logout</button>
           </div>
         </section>

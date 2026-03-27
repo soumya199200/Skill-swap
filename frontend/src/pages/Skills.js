@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSkills, createSkill, getUserByFirebaseUID } from '../services/api';
+import { bookSession, getSkills, createSkill, getUserByFirebaseUID } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,10 @@ function Skills() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingSkillId, setBookingSkillId] = useState('');
+  const [scheduledAt, setScheduledAt] = useState('');
+  const [bookingNotes, setBookingNotes] = useState('');
+  const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
     if (!currentUser) {
@@ -80,6 +84,47 @@ function Skills() {
     }
   };
 
+  const handleBookSession = async (skill) => {
+    setError('');
+    setSuccessMessage('');
+
+    if (!currentProfile?._id) {
+      setError('Your profile is still loading. Please try again in a moment.');
+      return;
+    }
+
+    if (!scheduledAt) {
+      setError('Please choose a session date and time first.');
+      return;
+    }
+
+    if (!skill.teacher?._id || skill.teacher._id === currentProfile._id) {
+      setError('You can only book sessions with other users.');
+      return;
+    }
+
+    try {
+      setIsBooking(true);
+      await bookSession({
+        mentor: skill.teacher._id,
+        student: currentProfile._id,
+        skill: skill._id,
+        creditsUsed: skill.creditsCost,
+        scheduledAt,
+        notes: bookingNotes.trim()
+      });
+      setBookingSkillId('');
+      setScheduledAt('');
+      setBookingNotes('');
+      setSuccessMessage('Session requested successfully. Check My Sessions for updates.');
+      await loadCurrentProfile();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Could not book this session.');
+    } finally {
+      setIsBooking(false);
+    }
+  };
+
   return (
     <div className="page-shell">
       <div className="content-shell grid-layout grid-layout--sidebar">
@@ -91,6 +136,7 @@ function Skills() {
           <div className="nav-row">
             <Link className="nav-link" to="/dashboard">Back to Dashboard</Link>
             <Link className="nav-link" to="/profile">My Profile</Link>
+            <Link className="nav-link" to="/sessions">My Sessions</Link>
           </div>
 
           <h2 className="section-heading" style={{ marginTop: '28px' }}>All Skills</h2>
@@ -105,10 +151,66 @@ function Skills() {
                 <article className="skill-card" key={skill._id}>
                   <h3>{skill.title}</h3>
                   <p>{skill.description}</p>
+                  <p>
+                    Mentor: {skill.teacher?.name || 'Unknown mentor'}
+                  </p>
                   <div className="skill-meta">
                     <span className="pill">Cost: {skill.creditsCost} credits</span>
                     <span className="pill">Category: {skill.category}</span>
                   </div>
+                  {currentProfile?._id && skill.teacher?._id !== currentProfile._id && (
+                    <div className="booking-box">
+                      {bookingSkillId === skill._id ? (
+                        <div className="stack-form">
+                          <input
+                            className="input-field"
+                            type="datetime-local"
+                            value={scheduledAt}
+                            onChange={(e) => setScheduledAt(e.target.value)}
+                          />
+                          <textarea
+                            className="textarea-field"
+                            placeholder="Add a short note for the mentor"
+                            value={bookingNotes}
+                            onChange={(e) => setBookingNotes(e.target.value)}
+                          />
+                          <div className="button-row">
+                            <button
+                              className="primary-button"
+                              type="button"
+                              disabled={isBooking}
+                              onClick={() => handleBookSession(skill)}
+                            >
+                              {isBooking ? 'Booking...' : 'Confirm Booking'}
+                            </button>
+                            <button
+                              className="secondary-button"
+                              type="button"
+                              onClick={() => {
+                                setBookingSkillId('');
+                                setScheduledAt('');
+                                setBookingNotes('');
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          className="secondary-button"
+                          type="button"
+                          onClick={() => {
+                            setBookingSkillId(skill._id);
+                            setError('');
+                            setSuccessMessage('');
+                          }}
+                        >
+                          Book Session
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </article>
               ))
             )}

@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey:  "AIzaSyA0DEZ1wpFiRiTw9Dl-5ymvu0I1mC_cNPU",
-  authDomain:  "skill-swap-platform-a829e.firebaseapp.com",
-  projectId: "skill-swap-platform-a829e",
-  storageBucket:  "skill-swap-platform-a829e.firebasestorage.app",
-  messagingSenderId: "876473315371",
-  appId: "1:876473315371:web:aae8c48abc65cbcb8a3a6e",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);

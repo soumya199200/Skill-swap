@@ -5,7 +5,8 @@ const Skill = require('../models/Skill');
 // GET all skills
 router.get('/', async (req, res) => {
   try {
-    const skills = await Skill.find({ isAvailable: true });
+    const skills = await Skill.find({ isAvailable: true })
+      .populate('teacher', 'name email role');
     res.json(skills);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,7 +33,8 @@ router.post('/', async (req, res) => {
 // GET single skill
 router.get('/:id', async (req, res) => {
   try {
-    const skill = await Skill.findById(req.params.id);
+    const skill = await Skill.findById(req.params.id)
+      .populate('teacher', 'name email role');
     if (!skill) {
       return res.status(404).json({ message: 'Skill not found' });
     }

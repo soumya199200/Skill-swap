@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Skills from './pages/Skills';
 import Profile from './pages/Profile';
+import Sessions from './pages/Sessions';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/sessions" element={<Sessions />} />
         </Routes>
       </div>
     </Router>

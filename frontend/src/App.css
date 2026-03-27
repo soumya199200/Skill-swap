@@ -274,6 +274,12 @@
   margin-top: 16px;
 }
 
+.booking-box {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(56, 41, 29, 0.08);
+}
+
 .profile-summary {
   display: grid;
   gap: 14px;

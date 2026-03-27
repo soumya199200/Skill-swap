@@ -12,5 +12,9 @@ export const getUserByFirebaseUID = (firebaseUID) => API.get(`/users/firebase/${
 export const updateUserProfile = (id, data) => API.put(`/users/${id}`, data);
 export const getUserCredits = (id) => API.get(`/users/${id}/credits`);
 export const bookSession = (data) => API.post('/sessions/book', data);
+export const getUserSessions = (userId) => API.get(`/sessions/user/${userId}`);
+export const acceptSession = (id) => API.put(`/sessions/${id}/accept`);
+export const completeSession = (id) => API.put(`/sessions/${id}/complete`);
+export const cancelSession = (id) => API.put(`/sessions/${id}/cancel`);
 
 export default API;
